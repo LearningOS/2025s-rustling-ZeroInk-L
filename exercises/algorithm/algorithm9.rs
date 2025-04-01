@@ -2,7 +2,7 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
+// I AM DONE HERE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -37,7 +37,10 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        //DONE
+        self.items.push(value);
+        self.count += 1;
+        self.sift_up(self.count);
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -57,8 +60,16 @@ where
     }
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-		0
+        //DONE
+		let left = self.left_child_idx(idx);
+        let right = self.right_child_idx(idx);
+        if right > self.count {
+            left
+        } else if (self.comparator)(&self.items[left], &self.items[right]) {
+            left
+        } else {
+            right
+        }
     }
 }
 
@@ -84,8 +95,15 @@ where
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+        //DONE
+		if self.is_empty() {
+            return None;
+        }
+        let result = Some(self.items[1].clone());
+        self.items[1] = self.items.pop().unwrap();
+        self.count -= 1;
+        self.sift_down(1);
+        result
     }
 }
 

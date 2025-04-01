@@ -3,14 +3,14 @@
 // Execute `rustlings hint macros1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+// I AM DONE HERE
 
-macro_rules! my_macro {
+macro_rules! print_macro_demo {
     () => {
         println!("Check out my macro!");
     };
 }
 
 fn main() {
-    my_macro();
+    print_macro_demo();
 }
