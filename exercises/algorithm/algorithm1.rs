@@ -6,7 +6,7 @@
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
-use std::vec::*;
+// use std::vec::*;
 
 #[derive(Debug)]
 struct Node<T> {
@@ -66,7 +66,7 @@ impl<T> LinkedList<T> {
             },
         }
     }
-    pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self
+    pub fn merge(mut list_a: LinkedList<T>, mut list_b: LinkedList<T>) -> Self
     //DONE
     where
         T: Ord,

@@ -5,13 +5,13 @@
 // Execute `rustlings hint clippy3` or use the `hint` watch subcommand for a hint.
 
 // I AM DONE HERE
-
+use std::mem;
 #[allow(unused_variables, unused_assignments)]
 fn main() {
-    let my_option: Option<()> = None;
-    if my_option.is_none() {
-        my_option.unwrap();
-    }
+    // let my_option: Option<()> = None;
+    // if my_option.is_none() {
+    //     my_option.unwrap_or(());
+    // }
 
     let my_arr = &[
         -1, -2, -3,
@@ -19,8 +19,8 @@ fn main() {
     ];
     println!("My array! Here it is: {:?}", my_arr);
 
-    let my_empty_vec = Vec::with_capacity(5);
-    my_empty_vec.resize(0, 5);
+    let mut my_empty_vec :Vec<i32> = Vec::with_capacity(5);
+    my_empty_vec.reserve(5);
     println!("This Vec is empty, see? {:?}", my_empty_vec);
 
     let mut value_a = 45;

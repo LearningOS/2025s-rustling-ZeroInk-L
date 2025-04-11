@@ -12,5 +12,5 @@ macro_rules! print_macro_demo {
 }
 
 fn main() {
-    print_macro_demo();
+    print_macro_demo!();
 }

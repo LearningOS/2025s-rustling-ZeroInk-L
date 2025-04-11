@@ -77,9 +77,10 @@ impl TryFrom<&[i16]> for Color {
             return Err(IntoColorError::BadLen);
         }
         let [r, g, b] = slice else {
-            unreachable!();
+            return Err(IntoColorError::BadLen);
+            // unreachable!();
         };
-        if r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255 {
+        if *r < 0 || *r > 255 || *g < 0 || *g > 255 || *b < 0 || *b > 255 {
             return Err(IntoColorError::IntConversion);
         }
         Ok(Color {
