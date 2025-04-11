@@ -18,16 +18,34 @@
 
 // I AM DONE HERE
 
-pub struct ReportCard {
-    pub grade: f32,
+pub struct ReportCard <T:GradeToString>{
+    pub grade: T,
     pub student_name: String,
     pub student_age: u8,
 }
 
-impl ReportCard {
+trait GradeToString {
+    fn to_string(&self) -> String;
+}
+
+enum Grade {
+    Numeric(f32),
+    Alphabetic(String),
+}
+
+impl GradeToString for Grade {
+    fn to_string(&self) -> String{
+        match self {
+            Grade::Numeric(n) => n.to_string(),
+            Grade::Alphabetic(s)=>s.clone(),
+        }
+    }
+}
+
+impl <T:GradeToString> ReportCard<T> {
     pub fn print(&self) -> String {
         format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade)
+            &self.student_name, &self.student_age, &self.grade.to_string())
     }
 }
 
@@ -38,7 +56,7 @@ mod tests {
     #[test]
     fn generate_numeric_report_card() {
         let report_card = ReportCard {
-            grade: 2.1,
+            grade: Grade::Numeric(2.1),
             student_name: "Tom Wriggle".to_string(),
             student_age: 12,
         };
