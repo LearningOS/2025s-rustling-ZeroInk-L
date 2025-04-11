@@ -1,6 +1,6 @@
 /*
-	queue
-	This question requires you to use queues to implement the functionality of the stac
+    queue
+    This question requires you to use queues to implement the functionality of the stac
 */
 // I AM DONE HERE
 
@@ -52,18 +52,17 @@ impl<T> Default for Queue<T> {
     }
 }
 
-pub struct myStack<T>
-{
-	//DONE
-	q1:Queue<T>,
-	q2:Queue<T>
+pub struct MyStack<T> {
+    //DONE
+    q1: Queue<T>,
+    q2: Queue<T>,
 }
-impl<T> myStack<T> {
+impl<T> MyStack<T> {
     pub fn new() -> Self {
         Self {
-			//DONE
-			q1:Queue::<T>::new(),
-			q2:Queue::<T>::new()
+            //DONE
+            q1: Queue::<T>::new(),
+            q2: Queue::<T>::new(),
         }
     }
     pub fn push(&mut self, elem: T) {
@@ -72,31 +71,37 @@ impl<T> myStack<T> {
     }
     pub fn pop(&mut self) -> Result<T, &str> {
         //DONE
-		if self.is_empty() {
+        if self.is_empty() {
             return Err("Stack is empty");
         }
         while self.q1.size() > 1 {
-            let item = self.q1.dequeue().unwrap();
-            self.q2.enqueue(item);
+            match self.q1.dequeue() {
+                Ok(item) => self.q2.enqueue(item),
+                Err(_) => return Err("Unexpected"),
+            };
         }
-        let result = self.q1.dequeue();
+        let result = match self.q1.dequeue() {
+            Ok(item) => Ok(item),
+            Err(_) => Err("Stack is empty"),
+        };
+        
         std::mem::swap(&mut self.q1, &mut self.q2);
         result
     }
     pub fn is_empty(&self) -> bool {
-		//DONE
+        //DONE
         self.q1.is_empty() && self.q2.is_empty()
     }
 }
 
 #[cfg(test)]
 mod tests {
-	use super::*;
-	
-	#[test]
-	fn test_queue(){
-		let mut s = myStack::<i32>::new();
-		assert_eq!(s.pop(), Err("Stack is empty"));
+    use super::*;
+
+    #[test]
+    fn test_queue() {
+        let mut s = MyStack::<i32>::new();
+        assert_eq!(s.pop(), Err("Stack is empty"));
         s.push(1);
         s.push(2);
         s.push(3);
@@ -110,5 +115,5 @@ mod tests {
         assert_eq!(s.pop(), Ok(1));
         assert_eq!(s.pop(), Err("Stack is empty"));
         assert_eq!(s.is_empty(), true);
-	}
+    }
 }

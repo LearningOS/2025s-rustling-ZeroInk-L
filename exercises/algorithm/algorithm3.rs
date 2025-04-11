@@ -7,16 +7,16 @@
 
 fn sort<T>(array: &mut [T])
 where
-    T: Ord,
+    T: Ord + Clone,
 {
     for i in 1..array.len() {
-        let key = array[i].clone();
-        let mut j = i - 1;
-        while j >= 0 && array[j] > key {
-            array[j + 1] = array[j].clone();
+        let mut key = array[i].clone();
+        let mut j = i;
+        while j > 0 && array[j - 1] > key {
+            array[j] = array[j - 1].clone();
             j = j - 1;
         }
-        array[j + 1] = key;
+        array[j] = key;
     }
 }
 #[cfg(test)]

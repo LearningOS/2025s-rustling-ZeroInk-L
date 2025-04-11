@@ -1,6 +1,6 @@
 /*
-	heap
-	This question requires you to implement a binary heap function
+    heap
+    This question requires you to implement a binary heap function
 */
 // I AM DONE HERE
 
@@ -23,7 +23,7 @@ where
     pub fn new(comparator: fn(&T, &T) -> bool) -> Self {
         Self {
             count: 0,
-            items: vec![T::default()],
+            items: Vec::new(),
             comparator,
         }
     }
@@ -40,19 +40,19 @@ where
         //DONE
         self.items.push(value);
         self.count += 1;
-        self.sift_up(self.count);
+        self.sift_up(self.count - 1);
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
-        idx / 2
+        (idx -1) / 2
     }
 
     fn children_present(&self, idx: usize) -> bool {
-        self.left_child_idx(idx) <= self.count
+        self.left_child_idx(idx) < self.count
     }
 
     fn left_child_idx(&self, idx: usize) -> usize {
-        idx * 2
+        idx * 2 + 1
     }
 
     fn right_child_idx(&self, idx: usize) -> usize {
@@ -61,14 +61,39 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //DONE
-		let left = self.left_child_idx(idx);
+        let left = self.left_child_idx(idx);
         let right = self.right_child_idx(idx);
-        if right > self.count {
+        if right >= self.count {
             left
         } else if (self.comparator)(&self.items[left], &self.items[right]) {
             left
         } else {
             right
+        }
+    }
+
+    fn sift_up(&mut self, idx: usize) {
+        let mut current = idx;
+        while current > 0 {
+            let parent = self.parent_idx(current);
+            if (self.comparator)(&self.items[current], &self.items[parent]) {
+                self.items.swap(current, parent);
+                current = parent;
+            } else {
+                break;
+            }
+        }
+    }
+    fn sift_down(&mut self, idx: usize) {
+        let mut current = idx;
+        while self.children_present(current) {
+            let child = self.smallest_child_idx(current);
+            if (self.comparator)(&self.items[child], &self.items[current]) {
+                self.items.swap(current, child);
+                current = child;
+            } else {
+                break;
+            }
         }
     }
 }
@@ -90,19 +115,23 @@ where
 
 impl<T> Iterator for Heap<T>
 where
-    T: Default,
+    T: Default + Clone,
 {
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
         //DONE
-		if self.is_empty() {
+        if self.is_empty() {
             return None;
         }
-        let result = Some(self.items[1].clone());
-        self.items[1] = self.items.pop().unwrap();
+        let result = Some(self.items[0].clone());
         self.count -= 1;
-        self.sift_down(1);
+        if self.count > 0 {
+            self.items[0] = self.items.pop().unwrap();
+            self.sift_down(0);
+        } else {
+            self.items.pop();
+        }
         result
     }
 }
